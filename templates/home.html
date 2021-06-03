@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang = "en">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" $
+
+<style>
+h1 {text-align: center;}
+canvas {width: 500px; height: 500px;}
+</style>
+<head>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+ <div class="container" style="min-height:100% width:80%">
+                {% with messages = get_flashed_messages() %}
+                  {% if messages %}
+                    {% for message in messages %}
+                      <div class="alert alert-warning alert-dismissible" role="alert">
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        {{message}}
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+                {% endwith %}
+
+                {% block body %}{% endblock %}
+                </div>
+
+<body>
+<h1>
+        Break Bad Computer Habits
+</h1>
+        Surrounding Brightness: {{brightness}}</br>
+        Distance from screen: {{dist}} inches</br></br></br></br>
+        **brightness ranges from 0 to 179. Surrounding brightness should be at least 50 to prevent eye strain.**
+
+<canvas id="lineChart" width = "300" height = "150"></canvas>
+<canvas id="lineChart2" width = "300" height = "150"></canvas>
+
+<script>
+        var ctx = document.getElementById("lineChart").getContext("2d");
+        var lineChart = new Chart(ctx, {
+                type: "line",
+                data: {
+                        labels: {{ b_labels | safe }},
+                        datasets: [
+                                {
+                                        label: "Surrounding Brightness Values",
+                                        data: {{ b_values | safe }},
+                                        fill: false,
+                                        borderColor: "rgb(255,0,0))",
+                                        lineTension: 0.1
+                                }
+                        ]
+                },
+                options: {
+                        responsive: true
+                }
+        });
+
+        var ctx2 = document.getElementById("lineChart2").getContext("2d");
+        var lineChart2 = new Chart(ctx2, {
+                type: "line",
+                data: {
+                        labels: {{ d_labels | safe }},
+                        datasets: [
+                                {
+                                        label: "Distance from Screen (inches)",
+                                        data: {{ d_values | safe }},
+                                        fill: false,
+                                        borderColor: "rgb(75,192,192)",
+                                        lineTension: 0.1
+                                }
+                        ]
+                },
+                options: {
+                        responsive: true
+                }
+        });
+</script>
+
+</body>
+</html>
+
